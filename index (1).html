@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mamaboy Hub - Web</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset cơ bản */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+        
+        /* Bộ lọc và tìm kiếm */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 50px;
+            border: 2px solid #334155;
+            background: #1e293b;
+            color: #f1f5f9;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+        
+        .filter-btn {
+            background: #334155;
+            color: #f1f5f9;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background: #475569;
+        }
+        
+        /* Grid chứa các link */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        /* Card link */
+        .link-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+            border: 1px solid #334155;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(30, 41, 59, 0.9);
+        }
+        
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        }
+        
+        .link-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .link-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e40af, #3730a3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .link-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        
+        .link-description {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .link-url {
+            display: flex;
+            align-items: center;
+            color: #60a5fa;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .link-url i {
+            margin-right: 8px;
+        }
+        
+        .link-category {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .search-box {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .link-card {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .link-card:nth-child(1) { animation-delay: 0.1s; }
+        .link-card:nth-child(2) { animation-delay: 0.2s; }
+        .link-card:nth-child(3) { animation-delay: 0.3s; }
+        .link-card:nth-child(4) { animation-delay: 0.4s; }
+        .link-card:nth-child(5) { animation-delay: 0.5s; }
+        .link-card:nth-child(6) { animation-delay: 0.6s; }
+        .link-card:nth-child(7) { animation-delay: 0.7s; }
+        .link-card:nth-child(8) { animation-delay: 0.8s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">Mamaboy HUB</h1>
+            <p class="tagline">Lỗi Gì Vô Discord Báo Dev Mamaboy Hub</p>
+            
+            <!-- Controls -->
+            <div class="controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm link...">
+                </div>
+                <button class="filter-btn" id="filterBtn">
+                    <i class="fas fa-filter"></i>
+                    Lọc theo thể loại
+                </button>
+            </div>
+        </header>
+        
+        <!-- Main Content - Links Grid -->
+        <main>
+            <div class="links-grid">
+                <!-- Link 1 -->
+                <a href="https://anotepad.com/notes/4ccxn6c4" target="_blank" class="link-card" data-category="development">
+                    <div class="link-header">
+                        <div class="link-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="link-title">Script</h3>
+                    </div>
+                    <p class="link-description">Script Hỗ Trợ 3 Map Anh Em Vô Discord Xem.</p>
+                    <div class="link-url">
+                        <i class="fas fa-external-link-alt"></i>
+                       Click Dưới
+                    </div>
+                    <span class="link-category">Script</span>
+                </a>
+                
+                <!-- Link 2 -->
+                <a href="https://drive.google.com/file/d/1OG3QI0axCLRzdl4FRANIsXM5WqSr3ZuL/view?usp=drivesdk" target="_blank" class="link-card" data-category="development">
+                    <div class="link-header">
+                        <div class="link-icon">
+                            <i class="fas fa-skull"></i>
+                        </div>
+                        <h3 class="link-title">Cách Get key</h3>
+                    </div>
+                    <p class="link-description">Video Get Key Coi Hết</p>
+                    <div class="link-url">
+                        <i class="fas fa-external-link-alt"></i>
+                        Cách Get Key HD
+                    </div>
+                    <span class="link-category">Cách Get Key</span>
+                </a>
+                              
+                <!-- Link 12 -->
+                <a href="https://discord.gg/djkXcnk5J" target="_blank" class="link-card" data-category="development">
+                    <div class="link-header">
+                        <div class="link-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <h3 class="link-title">Discord</h3>
+                    </div>
+                    <p class="link-description"></p>
+                    <div class="link-url">
+                        <i class="fas fa-external-link-alt"></i>
+                        https://discord.gg/djkXcnk5J
+                    </div>
+                    <span class="link-category">Discord</span>
+                </a>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Script Mamaboy Hub</p>
+            <p>Cập nhật lần cuối: Hôm nay</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tính số lượng link
+        document.getElementById('linkCount').textContent = document.querySelectorAll('.link-card').length;
+        
+        // Tìm kiếm link
+        const searchInput = document.getElementById('searchInput');
+        const linkCards = document.querySelectorAll('.link-card');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            linkCards.forEach(card => {
+                const title = card.querySelector('.link-title').textContent.toLowerCase();
+                const description = card.querySelector('.link-description').textContent.toLowerCase();
+                const category = card.getAttribute('data-category');
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        
+        // Lọc theo thể loại
+        const filterBtn = document.getElementById('filterBtn');
+        let currentFilter = 'all';
+        
+        filterBtn.addEventListener('click', function() {
+            // Tạo danh sách thể loại duy nhất
+            const categories = new Set();
+            linkCards.forEach(card => {
+                categories.add(card.getAttribute('data-category'));
+            });
+            
+            // Tạo menu lọc
+            const filterMenu = document.createElement('div');
+            filterMenu.style.cssText = `
+                position: absolute;
+                background: #1e293b;
+                border: 1px solid #334155;
+                border-radius: 10px;
+                padding: 15px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                z-index: 100;
+                min-width: 200px;
+            `;
+            
+            // Định vị menu
+            const rect = filterBtn.getBoundingClientRect();
+            filterMenu.style.top = (rect.bottom + 5) + 'px';
+            filterMenu.style.left = rect.left + 'px';
+            
+            // Thêm tùy chọn "Tất cả"
+            const allOption = document.createElement('div');
+            allOption.textContent = ' Tất cả';
+            allOption.style.cssText = 'padding: 10px; cursor: pointer; border-radius: 5px; margin-bottom: 5px;';
+            allOption.style.background = currentFilter === 'all' ? '#334155' : 'transparent';
+            allOption.addEventListener('click', () => {
+                setFilter('all');
+                document.body.removeChild(filterMenu);
+            });
+            filterMenu.appendChild(allOption);
+            
+            // Thêm các thể loại
+            categories.forEach(category => {
+                const option = document.createElement('div');
+                
+                // Đặt tên hiển thị cho thể loại
+                let displayName = '';
+                switch(category) {
+                    case 'development': displayName = ''; break;
+                    case 'design': displayName = ''; break;
+                    case 'resources': displayName = ''; break;
+                    case 'documentation': displayName = ''; break;
+                    case 'learning': displayName = '🎓 Học tập'; break;
+                    case 'tools': displayName = '🛠️ Công cụ'; break;
+                    case 'productivity': displayName = '⚡ Năng suất'; break;
+                    default: displayName = '📌 ' + category;
+                }
+                
+                option.textContent = displayName;
+                option.style.cssText = 'padding: 10px; cursor: pointer; border-radius: 5px; margin-bottom: 5px;';
+                option.style.background = currentFilter === category ? '#334155' : 'transparent';
+                
+                option.addEventListener('click', () => {
+                    setFilter(category);
+                    document.body.removeChild(filterMenu);
+                });
+                
+                filterMenu.appendChild(option);
+            });
+            
+            document.body.appendChild(filterMenu);
+            
+            // Đóng menu khi click bên ngoài
+            setTimeout(() => {
+                const closeMenu = (e) => {
+                    if (!filterMenu.contains(e.target) && e.target !== filterBtn) {
+                        document.body.removeChild(filterMenu);
+                        document.removeEventListener('click', closeMenu);
+                    }
+                };
+                document.addEventListener('click', closeMenu);
+            }, 10);
+        });
+        
+        function setFilter(category) {
+            currentFilter = category;
+            
+            // Cập nhật nút lọc
+            let filterText = '';
+            switch(category) {
+                case 'all': filterText = 'Tất cả'; break;
+                case 'development': filterText = ''; break;
+                case 'design': filterText = ''; break;
+                case 'resources': filterText = ''; break;
+                case 'documentation': filterText = ''; break;
+                case 'learning': filterText = 'Discord'; break;
+                case 'tools': filterText = 'Công cụ'; break;
+                case 'productivity': filterText = 'Năng suất'; break;
+                default: filterText = category;
+            }
+            
+            filterBtn.innerHTML = `<i class="fas fa-filter"></i> ${filterText}`;
+            
+            // Áp dụng bộ lọc
+            linkCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Hiệu ứng khi di chuột vào link
+        linkCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (!this.matches(':hover')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // Thông báo console
+        console.log('%c Web Mamaboy Hub', 'color: #3b82f6; font-size: 16px; font-weight: bold;');
+        console.log('%c Chào mừng đến web!', 'color: #8b5cf6;');
+    </script>
+</body>
+</html>
